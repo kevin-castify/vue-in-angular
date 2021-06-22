@@ -1,10 +1,10 @@
 <p>
-  <button *ngIf="page > 1" (click)="previousPage()">Previous</button>
-  <span>Page {{ page }} of {{ totalPages }}</span>
-  <button *ngIf="page < totalPages" (click)="nextPage()">Next</button>
+  <button *ngIf="page.value > 1" (click)="previousPage()">Previous</button>
+  <span>Page {{ page.value }} of {{ totalPages.value }}</span>
+  <button *ngIf="page.value < totalPages.value" (click)="nextPage()">Next</button>
 </p>
 <div class="cards">
-  <div *ngFor="let post of currentPosts" class="card">
+  <div *ngFor="let post of currentPosts.value" class="card">
     <h2>{{ post.title }}</h2>
     <p>{{ post.body }}</p>
     <button (click)="toggleFavorite(post.id)" class="favorite" [ngClass]="{selected: post.favorite}">👍</button>
