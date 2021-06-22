@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from '../../services/posts.service';
 import { Post } from '../../Post';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-all-posts',
