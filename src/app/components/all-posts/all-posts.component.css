@@ -1,0 +1,29 @@
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card {
+  max-width: 29%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button.favorite {
+  margin-right: 4px;
+  background: white;
+  border: none;
+}
+
+.favorite.selected {
+  border: 3px blue solid;
+  background: #ccc;
+  border-radius: 4px;
+}
+
+button {
+  margin-left: 8px;
+  margin-right: 8px;
+}
