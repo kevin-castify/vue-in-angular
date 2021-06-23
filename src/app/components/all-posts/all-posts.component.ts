@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from '../../services/posts.service';
 import { Post } from '../../Post';
-import { BehaviorSubject } from 'rxjs';
+import { ref, computed } from 'vue';
 
 @Component({
   selector: 'app-all-posts',
@@ -10,47 +10,35 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AllPostsComponent implements OnInit {
   posts: Post[] = [];
-  page = 1;
   postsPerPage = 9;
-  totalPages = 0;
-  offset = 0;
-  currentPosts: Post[] = [];
-
+  page = ref(0);
+  offset = computed(() => ((this.page.value - 1) * this.postsPerPage));
+  currentPosts = computed(() => this.posts.slice(this.offset.value, this.offset.value + this.postsPerPage));
+  totalPages = computed(() => this.page.value && Math.ceil(this.posts.length / this.postsPerPage));
+  
   constructor(private postsService: PostsService) { }
 
   ngOnInit(): void {
     this.postsService.getPosts().subscribe((posts) => {
       this.posts = posts.map(post => new Post(post.id, post.userId, post.title, post.body));
-      this.setCurrentPosts();
-      this.setPagination();
-    })
-  }
-
-  setCurrentPosts() {
-    this.offset = (this.page - 1) * this.postsPerPage;
-    this.currentPosts = this.posts.slice(this.offset, this.offset + this.postsPerPage);
-  }
-
-  setPagination() {
-    this.totalPages = Math.ceil(this.posts.length / this.postsPerPage);
+      this.page.value = 1;
+    })    
   }
 
   previousPage() {
-    if (this.page > 1) {
-      --this.page;
+    if (this.page.value > 1) {
+      --this.page.value;
     } else {
-      this.page = 1;
+      this.page.value = 1;
     }
-    this.setCurrentPosts();
   }
   
   nextPage() {
-    if (this.page < this.totalPages) {
-      ++this.page;
+    if (this.page.value < this.totalPages.value) {
+      ++this.page.value;
     } else {
-      this.page = this.totalPages;
+      this.page.value = this.totalPages.value;
     }
-    this.setCurrentPosts();
   }
 
   toggleFavorite(postId: number) {
